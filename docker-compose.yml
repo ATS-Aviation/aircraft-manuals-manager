@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: manuals-db
+    environment:
+      POSTGRES_USER: manuals_user
+      POSTGRES_PASSWORD: manuals_pass
+      POSTGRES_DB: manuals_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - manuals-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U manuals_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # FastAPI Backend
+  backend:
+    build: ./backend
+    container_name: manuals-backend
+    environment:
+      DATABASE_URL: postgresql://manuals_user:manuals_pass@db:5432/manuals_db
+      SECRET_KEY: change-this-to-a-random-secret-key-in-production
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - manuals-network
+
+  # React Frontend
+  frontend:
+    build: ./frontend
+    container_name: manuals-frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - backend
+    networks:
+      - manuals-network
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: manuals-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - manuals-network
+
+volumes:
+  postgres_data:
+
+networks:
+  manuals-network:
+    driver: bridge

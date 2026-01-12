@@ -1,0 +1,37 @@
+.customer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.aircraft-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.aircraft-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+  text-decoration: none;
+  color: var(--text-color);
+  transition: all 0.3s;
+}
+
+.aircraft-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.aircraft-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.view-link {
+  color: var(--primary-color);
+  font-weight: 500;
+  margin-top: 1rem;
+}

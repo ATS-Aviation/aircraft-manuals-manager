@@ -18,7 +18,12 @@ class Settings(BaseSettings):
     NGINX_CONFIG_PATH: str = "/etc/nginx/conf.d/manuals-proxy.conf"
     
     # CORS
-    BACKEND_CORS_ORIGINS: list = ["http://localhost:3000", "http://localhost"]
+    BACKEND_CORS_ORIGINS: list = [
+        "http://localhost:3000",
+        "http://localhost",
+        "http://manuals.ats-technic.com",
+        "https://manuals.ats-technic.com",
+    ]
     
     class Config:
         env_file = ".env"

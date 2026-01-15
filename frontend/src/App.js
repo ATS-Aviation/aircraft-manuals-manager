@@ -47,12 +47,32 @@ const PublicRoute = ({ children }) => {
   return children;
 };
 
+// Session Expired Notification
+const SessionExpiredNotification = () => {
+  const { sessionExpired, dismissSessionExpired } = useAuth();
+
+  if (!sessionExpired) return null;
+
+  return (
+    <div className="session-expired-overlay">
+      <div className="session-expired-modal">
+        <h2>Session Expired</h2>
+        <p>Your session has expired. Please log in again to continue.</p>
+        <button onClick={dismissSessionExpired} className="btn btn-primary">
+          Go to Login
+        </button>
+      </div>
+    </div>
+  );
+};
+
 function App() {
   return (
     <Router>
       <AuthProvider>
         <div className="app">
           <Navbar />
+          <SessionExpiredNotification />
           <main className="main-content">
             <Routes>
               {/* Public Routes */}

@@ -42,9 +42,7 @@ class ManualApp(Base):
     id = Column(Integer, primary_key=True, index=True)
     aircraft_id = Column(Integer, ForeignKey("aircraft.id", ondelete="CASCADE"), nullable=False)
     title = Column(String(200), nullable=False)
-    backend_port = Column(Integer, nullable=True)
-    backend_host = Column(String(100), default="localhost", nullable=True)
-    iframe_url = Column(String(500), nullable=True)  # Full URL for iframe display
+    iframe_url = Column(String(500), nullable=True)
     url_path = Column(String(500), unique=True, nullable=False)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

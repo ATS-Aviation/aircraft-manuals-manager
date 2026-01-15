@@ -19,11 +19,19 @@ def run_migrations():
                 conn.commit()
                 print("Migration: Added iframe_url column to manual_apps table")
 
-        # Make backend_port nullable
-        with engine.connect() as conn:
-            conn.execute(text('ALTER TABLE manual_apps ALTER COLUMN backend_port DROP NOT NULL'))
-            conn.commit()
-            print("Migration: Made backend_port nullable")
+        # Drop deprecated backend_port column
+        if 'backend_port' in columns:
+            with engine.connect() as conn:
+                conn.execute(text('ALTER TABLE manual_apps DROP COLUMN backend_port'))
+                conn.commit()
+                print("Migration: Dropped backend_port column")
+
+        # Drop deprecated backend_host column
+        if 'backend_host' in columns:
+            with engine.connect() as conn:
+                conn.execute(text('ALTER TABLE manual_apps DROP COLUMN backend_host'))
+                conn.commit()
+                print("Migration: Dropped backend_host column")
 
     print("Migrations completed")
 

@@ -29,8 +29,12 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-card">
+        <img
+          src="https://atsaviation.com/wp-content/uploads/2024/11/Technik.png"
+          alt="ATS Technic Logo"
+          className="login-logo"
+        />
         <h1>Aircraft Manuals Manager</h1>
-        <h2>Login</h2>
         
         {error && (
           <div className="alert alert-error">

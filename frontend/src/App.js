@@ -10,6 +10,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import AddCustomer from './pages/AddCustomer';
 import AddAircraft from './pages/AddAircraft';
 import AddManualApp from './pages/AddManualApp';
+import ManualViewer from './pages/ManualViewer';
 import './App.css';
 
 // Protected Route Component
@@ -88,6 +89,15 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Aircraft />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/manual/:manualId"
+                element={
+                  <ProtectedRoute>
+                    <ManualViewer />
                   </ProtectedRoute>
                 }
               />

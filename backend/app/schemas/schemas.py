@@ -75,9 +75,10 @@ class AircraftWithCustomer(AircraftResponse):
 # Manual App Schemas
 class ManualAppBase(BaseModel):
     title: str
-    backend_port: int = Field(..., ge=1024, le=65535)
-    backend_host: str = "localhost"
     aircraft_id: int
+    backend_port: Optional[int] = Field(None, ge=1024, le=65535)
+    backend_host: Optional[str] = "localhost"
+    iframe_url: Optional[str] = None  # Full URL for iframe display
 
 class ManualAppCreate(ManualAppBase):
     pass
@@ -86,6 +87,7 @@ class ManualAppUpdate(BaseModel):
     title: Optional[str] = None
     backend_port: Optional[int] = Field(None, ge=1024, le=65535)
     backend_host: Optional[str] = None
+    iframe_url: Optional[str] = None
     is_active: Optional[bool] = None
 
 class ManualAppResponse(ManualAppBase):
@@ -93,7 +95,7 @@ class ManualAppResponse(ManualAppBase):
     url_path: str
     is_active: bool
     created_at: datetime
-    
+
     class Config:
         from_attributes = True
 

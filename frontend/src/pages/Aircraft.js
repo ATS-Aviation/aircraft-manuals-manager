@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { getAircraftById, getManualAppsByAircraft } from '../services/api';
 import './Aircraft.css';
 
 const Aircraft = () => {
   const { customerId, aircraftId } = useParams();
+  const navigate = useNavigate();
   const [aircraft, setAircraft] = useState(null);
   const [manualApps, setManualApps] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -60,22 +61,25 @@ const Aircraft = () => {
       ) : (
         <div className="manuals-list">
           {manualApps.map((app) => (
-            <a
+            <div
               key={app.id}
-              href={app.url_path}
-              target="_blank"
-              rel="noopener noreferrer"
               className="manual-card"
+              onClick={() => navigate(`/manual/${app.id}`)}
+              style={{ cursor: 'pointer' }}
             >
               <div className="manual-header">
                 <h2>{app.title}</h2>
-                <span className="external-icon">↗</span>
+                <span className="external-icon">→</span>
               </div>
               <div className="manual-details">
-                <p className="manual-path">{app.url_path}</p>
-                <p className="manual-port">Port: {app.backend_port}</p>
+                <p className="manual-path">{app.iframe_url || 'No URL configured'}</p>
+                {app.is_active ? (
+                  <span className="status-active">Active</span>
+                ) : (
+                  <span className="status-inactive">Inactive</span>
+                )}
               </div>
-            </a>
+            </div>
           ))}
         </div>
       )}

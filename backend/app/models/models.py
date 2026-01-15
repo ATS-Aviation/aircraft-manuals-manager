@@ -38,14 +38,15 @@ class Aircraft(Base):
 
 class ManualApp(Base):
     __tablename__ = "manual_apps"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     aircraft_id = Column(Integer, ForeignKey("aircraft.id", ondelete="CASCADE"), nullable=False)
     title = Column(String(200), nullable=False)
-    backend_port = Column(Integer, nullable=False)
-    backend_host = Column(String(100), default="localhost", nullable=False)
+    backend_port = Column(Integer, nullable=True)
+    backend_host = Column(String(100), default="localhost", nullable=True)
+    iframe_url = Column(String(500), nullable=True)  # Full URL for iframe display
     url_path = Column(String(500), unique=True, nullable=False)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    
+
     aircraft = relationship("Aircraft", back_populates="manual_apps")

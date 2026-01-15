@@ -68,10 +68,6 @@ const Login = () => {
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
-
-        <div className="login-info">
-          <p>Default credentials: <strong>admin / admin</strong></p>
-        </div>
       </div>
     </div>
   );

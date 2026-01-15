@@ -75,7 +75,6 @@ const Aircraft = () => {
                   <span className="external-icon"><FiExternalLink /></span>
                 </div>
                 <div className="manual-details">
-                  <p className="manual-path">{app.iframe_url || 'No URL configured'}</p>
                   {app.is_active ? (
                     <span className="status-active">Active</span>
                   ) : (

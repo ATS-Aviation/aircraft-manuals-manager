@@ -64,14 +64,6 @@ const ManualViewer = () => {
           Back
         </button>
         <h1>{manual.title}</h1>
-        <a
-          href={manual.iframe_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn-external"
-        >
-          Open in New Tab
-        </a>
       </div>
       <div className="manual-viewer-content">
         <iframe

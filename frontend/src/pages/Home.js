@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getCustomers } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
+import { FiUsers, FiArrowRight } from 'react-icons/fi';
 import './Home.css';
 
 const Home = () => {
@@ -56,8 +57,9 @@ const Home = () => {
               to={`/customer/${customer.id}`}
               className="customer-card"
             >
+              <div className="card-icon"><FiUsers /></div>
               <h2>{customer.name}</h2>
-              <p className="view-link">View Aircraft →</p>
+              <p className="view-link">View Aircraft <FiArrowRight /></p>
             </Link>
           ))}
         </div>

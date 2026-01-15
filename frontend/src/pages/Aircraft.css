@@ -18,7 +18,19 @@
   text-decoration: none;
   color: var(--text-color);
   transition: all 0.3s;
-  display: block;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.manual-icon {
+  font-size: 2rem;
+  color: var(--accent-color);
+  flex-shrink: 0;
+}
+
+.manual-content {
+  flex: 1;
 }
 
 .manual-card:hover {

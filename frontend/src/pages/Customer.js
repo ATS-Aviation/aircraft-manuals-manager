@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getCustomer, getAircraftByCustomer } from '../services/api';
+import { FiNavigation, FiArrowRight } from 'react-icons/fi';
 import './Customer.css';
 
 const Customer = () => {
@@ -63,8 +64,9 @@ const Customer = () => {
               to={`/customer/${id}/aircraft/${item.id}`}
               className="aircraft-card"
             >
+              <div className="card-icon"><FiNavigation /></div>
               <h2>{item.name}</h2>
-              <p className="view-link">View Manuals →</p>
+              <p className="view-link">View Manuals <FiArrowRight /></p>
             </Link>
           ))}
         </div>

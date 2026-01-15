@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getCustomers, getAircraft, getManualApps, deleteCustomer, deleteAircraft, deleteManualApp, updateCustomer, updateAircraft, updateManualApp } from '../services/api';
+import { FiUsers, FiNavigation, FiBook, FiPlus, FiEdit2, FiTrash2, FiArrowLeft, FiSave, FiX } from 'react-icons/fi';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -124,7 +125,7 @@ const AdminDashboard = () => {
       <div className="admin-header">
         <h1>Admin Dashboard</h1>
         <div className="header-actions">
-          <Link to="/" className="btn btn-outline">Back to Home</Link>
+          <Link to="/" className="btn btn-outline"><FiArrowLeft /> Back to Home</Link>
         </div>
       </div>
 
@@ -139,19 +140,19 @@ const AdminDashboard = () => {
           className={`tab ${activeTab === 'customers' ? 'active' : ''}`}
           onClick={() => setActiveTab('customers')}
         >
-          Customers ({customers.length})
+          <FiUsers /> Customers ({customers.length})
         </button>
         <button
           className={`tab ${activeTab === 'aircraft' ? 'active' : ''}`}
           onClick={() => setActiveTab('aircraft')}
         >
-          Aircraft ({aircraft.length})
+          <FiNavigation /> Aircraft ({aircraft.length})
         </button>
         <button
           className={`tab ${activeTab === 'manuals' ? 'active' : ''}`}
           onClick={() => setActiveTab('manuals')}
         >
-          Manual Apps ({manualApps.length})
+          <FiBook /> Manual Apps ({manualApps.length})
         </button>
       </div>
 
@@ -160,7 +161,7 @@ const AdminDashboard = () => {
           <div className="section">
             <div className="section-header">
               <h2>Customers</h2>
-              <Link to="/admin/customer/add" className="btn btn-primary">+ Add Customer</Link>
+              <Link to="/admin/customer/add" className="btn btn-primary"><FiPlus /> Add Customer</Link>
             </div>
             <div className="table-container">
               <table>
@@ -183,13 +184,13 @@ const AdminDashboard = () => {
                           onClick={() => openEditModal('customer', customer)}
                           className="btn btn-secondary btn-sm"
                         >
-                          Edit
+                          <FiEdit2 /> Edit
                         </button>
                         <button
                           onClick={() => handleDeleteCustomer(customer.id)}
                           className="btn btn-danger btn-sm"
                         >
-                          Delete
+                          <FiTrash2 /> Delete
                         </button>
                       </td>
                     </tr>
@@ -204,7 +205,7 @@ const AdminDashboard = () => {
           <div className="section">
             <div className="section-header">
               <h2>Aircraft</h2>
-              <Link to="/admin/aircraft/add" className="btn btn-primary">+ Add Aircraft</Link>
+              <Link to="/admin/aircraft/add" className="btn btn-primary"><FiPlus /> Add Aircraft</Link>
             </div>
             <div className="table-container">
               <table>
@@ -229,13 +230,13 @@ const AdminDashboard = () => {
                           onClick={() => openEditModal('aircraft', item)}
                           className="btn btn-secondary btn-sm"
                         >
-                          Edit
+                          <FiEdit2 /> Edit
                         </button>
                         <button
                           onClick={() => handleDeleteAircraft(item.id)}
                           className="btn btn-danger btn-sm"
                         >
-                          Delete
+                          <FiTrash2 /> Delete
                         </button>
                       </td>
                     </tr>
@@ -250,7 +251,7 @@ const AdminDashboard = () => {
           <div className="section">
             <div className="section-header">
               <h2>Manual Apps</h2>
-              <Link to="/admin/manual-app/add" className="btn btn-primary">+ Add Manual App</Link>
+              <Link to="/admin/manual-app/add" className="btn btn-primary"><FiPlus /> Add Manual App</Link>
             </div>
             <div className="table-container">
               <table>
@@ -279,13 +280,13 @@ const AdminDashboard = () => {
                           onClick={() => openEditModal('manual', app)}
                           className="btn btn-secondary btn-sm"
                         >
-                          Edit
+                          <FiEdit2 /> Edit
                         </button>
                         <button
                           onClick={() => handleDeleteManualApp(app.id)}
                           className="btn btn-danger btn-sm"
                         >
-                          Delete
+                          <FiTrash2 /> Delete
                         </button>
                       </td>
                     </tr>
@@ -360,8 +361,8 @@ const AdminDashboard = () => {
               )}
 
               <div className="modal-actions">
-                <button type="submit" className="btn btn-primary">Save Changes</button>
-                <button type="button" className="btn btn-outline" onClick={closeEditModal}>Cancel</button>
+                <button type="submit" className="btn btn-primary"><FiSave /> Save Changes</button>
+                <button type="button" className="btn btn-outline" onClick={closeEditModal}><FiX /> Cancel</button>
               </div>
             </form>
           </div>

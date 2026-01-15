@@ -41,6 +41,12 @@
   box-shadow: var(--shadow-lg);
 }
 
+.card-icon {
+  font-size: 2.5rem;
+  color: var(--accent-color);
+  margin-bottom: 1rem;
+}
+
 .customer-card h2 {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
@@ -50,4 +56,7 @@
   color: var(--primary-color);
   font-weight: 500;
   margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }

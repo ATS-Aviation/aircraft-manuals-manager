@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { getAircraftById, getManualAppsByAircraft } from '../services/api';
+import { FiBook, FiExternalLink } from 'react-icons/fi';
 import './Aircraft.css';
 
 const Aircraft = () => {
@@ -67,17 +68,20 @@ const Aircraft = () => {
               onClick={() => navigate(`/manual/${app.id}`)}
               style={{ cursor: 'pointer' }}
             >
-              <div className="manual-header">
-                <h2>{app.title}</h2>
-                <span className="external-icon">→</span>
-              </div>
-              <div className="manual-details">
-                <p className="manual-path">{app.iframe_url || 'No URL configured'}</p>
-                {app.is_active ? (
-                  <span className="status-active">Active</span>
-                ) : (
-                  <span className="status-inactive">Inactive</span>
-                )}
+              <div className="manual-icon"><FiBook /></div>
+              <div className="manual-content">
+                <div className="manual-header">
+                  <h2>{app.title}</h2>
+                  <span className="external-icon"><FiExternalLink /></span>
+                </div>
+                <div className="manual-details">
+                  <p className="manual-path">{app.iframe_url || 'No URL configured'}</p>
+                  {app.is_active ? (
+                    <span className="status-active">Active</span>
+                  ) : (
+                    <span className="status-inactive">Inactive</span>
+                  )}
+                </div>
               </div>
             </div>
           ))}

@@ -73,8 +73,7 @@ def create_manual_app(
     
     manual_app = ManualApp(
         title=app_data.title,
-        backend_port=app_data.backend_port,
-        backend_host=app_data.backend_host,
+        iframe_url=app_data.iframe_url,
         aircraft_id=app_data.aircraft_id,
         url_path=url_path,
         is_active=True
@@ -112,13 +111,10 @@ def update_manual_app(
         aircraft_slug = aircraft.slug
         manual_slug = create_slug(app_data.title)
         manual_app.url_path = f"/manuals/{customer_slug}/{aircraft_slug}/{manual_slug}/"
-    
-    if app_data.backend_port:
-        manual_app.backend_port = app_data.backend_port
-    
-    if app_data.backend_host:
-        manual_app.backend_host = app_data.backend_host
-    
+
+    if app_data.iframe_url is not None:
+        manual_app.iframe_url = app_data.iframe_url
+
     if app_data.is_active is not None:
         manual_app.is_active = app_data.is_active
     
@@ -159,14 +155,19 @@ def test_manual_app(
     manual_app = db.query(ManualApp).filter(ManualApp.id == app_id).first()
     if not manual_app:
         raise HTTPException(status_code=404, detail="Manual app not found")
-    
+
+    if not manual_app.iframe_url:
+        return {
+            "success": False,
+            "message": "No iframe URL configured"
+        }
+
     try:
-        test_url = f"http://{manual_app.backend_host}:{manual_app.backend_port}"
-        response = requests.get(test_url, timeout=5)
+        response = requests.get(manual_app.iframe_url, timeout=5)
         return {
             "success": True,
             "status_code": response.status_code,
-            "message": "Backend is reachable"
+            "message": "URL is reachable"
         }
     except Exception as e:
         return {

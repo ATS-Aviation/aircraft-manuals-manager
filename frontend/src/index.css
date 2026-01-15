@@ -5,15 +5,22 @@
 }
 
 :root {
-  --primary-color: #2563eb;
-  --primary-hover: #1d4ed8;
+  /* ATS Technic Brand Colors */
+  --primary-color: #182F3D;
+  --primary-hover: #072236;
+  --accent-color: #F27721;
+  --accent-hover: #d96619;
+  --secondary-color: #0056a7;
+  --secondary-hover: #004080;
   --danger-color: #dc2626;
   --danger-hover: #b91c1c;
   --success-color: #16a34a;
-  --warning-color: #ea580c;
-  --bg-color: #f8fafc;
-  --text-color: #1e293b;
+  --warning-color: #F27721;
+  --bg-color: #ecf6ff;
+  --text-color: #212121;
+  --text-secondary: #858585;
   --border-color: #e2e8f0;
+  --light-blue: #82AACB;
   --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
@@ -142,4 +149,13 @@ code {
 .btn-sm {
   padding: 0.375rem 0.75rem;
   font-size: 0.875rem;
+}
+
+.btn-accent {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.btn-accent:hover:not(:disabled) {
+  background-color: var(--accent-hover);
 }

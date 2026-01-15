@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getCustomers, getAircraft, getManualApps, deleteCustomer, deleteAircraft, deleteManualApp, reloadNginx } from '../services/api';
+import { getCustomers, getAircraft, getManualApps, deleteCustomer, deleteAircraft, deleteManualApp, updateCustomer, updateAircraft, updateManualApp } from '../services/api';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -10,6 +10,10 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('customers');
   const [message, setMessage] = useState({ type: '', text: '' });
+
+  // Edit modal states
+  const [editModal, setEditModal] = useState({ type: null, item: null });
+  const [editForm, setEditForm] = useState({});
 
   useEffect(() => {
     fetchData();
@@ -35,6 +39,47 @@ const AdminDashboard = () => {
   const showMessage = (type, text) => {
     setMessage({ type, text });
     setTimeout(() => setMessage({ type: '', text: '' }), 5000);
+  };
+
+  // Open edit modal
+  const openEditModal = (type, item) => {
+    setEditModal({ type, item });
+    if (type === 'customer') {
+      setEditForm({ name: item.name });
+    } else if (type === 'aircraft') {
+      setEditForm({ name: item.name });
+    } else if (type === 'manual') {
+      setEditForm({ title: item.title, iframe_url: item.iframe_url || '' });
+    }
+  };
+
+  const closeEditModal = () => {
+    setEditModal({ type: null, item: null });
+    setEditForm({});
+  };
+
+  // Handle edit submit
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (editModal.type === 'customer') {
+        await updateCustomer(editModal.item.id, { name: editForm.name });
+        showMessage('success', 'Customer updated successfully');
+      } else if (editModal.type === 'aircraft') {
+        await updateAircraft(editModal.item.id, { name: editForm.name });
+        showMessage('success', 'Aircraft updated successfully');
+      } else if (editModal.type === 'manual') {
+        await updateManualApp(editModal.item.id, {
+          title: editForm.title,
+          iframe_url: editForm.iframe_url
+        });
+        showMessage('success', 'Manual app updated successfully');
+      }
+      closeEditModal();
+      fetchData();
+    } catch (err) {
+      showMessage('error', 'Failed to update');
+    }
   };
 
   const handleDeleteCustomer = async (id) => {
@@ -70,19 +115,6 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleReloadNginx = async () => {
-    try {
-      const response = await reloadNginx();
-      if (response.data.success) {
-        showMessage('success', response.data.message);
-      } else {
-        showMessage('error', response.data.message);
-      }
-    } catch (err) {
-      showMessage('error', 'Failed to reload nginx');
-    }
-  };
-
   if (loading) {
     return <div className="loading">Loading...</div>;
   }
@@ -92,10 +124,7 @@ const AdminDashboard = () => {
       <div className="admin-header">
         <h1>Admin Dashboard</h1>
         <div className="header-actions">
-          <button onClick={handleReloadNginx} className="btn btn-secondary">
-            🔄 Reload Nginx
-          </button>
-          <Link to="/" className="btn btn-outline">← Back to Home</Link>
+          <Link to="/" className="btn btn-outline">Back to Home</Link>
         </div>
       </div>
 
@@ -149,7 +178,13 @@ const AdminDashboard = () => {
                       <td>{customer.name}</td>
                       <td><code>{customer.slug}</code></td>
                       <td>{new Date(customer.created_at).toLocaleDateString()}</td>
-                      <td>
+                      <td className="actions-cell">
+                        <button
+                          onClick={() => openEditModal('customer', customer)}
+                          className="btn btn-secondary btn-sm"
+                        >
+                          Edit
+                        </button>
                         <button
                           onClick={() => handleDeleteCustomer(customer.id)}
                           className="btn btn-danger btn-sm"
@@ -189,7 +224,13 @@ const AdminDashboard = () => {
                       <td>{item.customer.name}</td>
                       <td><code>{item.slug}</code></td>
                       <td>{new Date(item.created_at).toLocaleDateString()}</td>
-                      <td>
+                      <td className="actions-cell">
+                        <button
+                          onClick={() => openEditModal('aircraft', item)}
+                          className="btn btn-secondary btn-sm"
+                        >
+                          Edit
+                        </button>
                         <button
                           onClick={() => handleDeleteAircraft(item.id)}
                           className="btn btn-danger btn-sm"
@@ -233,7 +274,13 @@ const AdminDashboard = () => {
                           {app.is_active ? 'Active' : 'Inactive'}
                         </span>
                       </td>
-                      <td>
+                      <td className="actions-cell">
+                        <button
+                          onClick={() => openEditModal('manual', app)}
+                          className="btn btn-secondary btn-sm"
+                        >
+                          Edit
+                        </button>
                         <button
                           onClick={() => handleDeleteManualApp(app.id)}
                           className="btn btn-danger btn-sm"
@@ -249,6 +296,77 @@ const AdminDashboard = () => {
           </div>
         )}
       </div>
+
+      {/* Edit Modal */}
+      {editModal.type && (
+        <div className="modal-overlay" onClick={closeEditModal}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>
+                Edit {editModal.type === 'customer' ? 'Customer' : editModal.type === 'aircraft' ? 'Aircraft' : 'Manual App'}
+              </h2>
+              <button className="modal-close" onClick={closeEditModal}>&times;</button>
+            </div>
+            <form onSubmit={handleEditSubmit} className="modal-form">
+              {editModal.type === 'customer' && (
+                <div className="form-group">
+                  <label htmlFor="name">Customer Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    value={editForm.name || ''}
+                    onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                    required
+                  />
+                </div>
+              )}
+
+              {editModal.type === 'aircraft' && (
+                <div className="form-group">
+                  <label htmlFor="name">Aircraft Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    value={editForm.name || ''}
+                    onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                    required
+                  />
+                </div>
+              )}
+
+              {editModal.type === 'manual' && (
+                <>
+                  <div className="form-group">
+                    <label htmlFor="title">Manual Title</label>
+                    <input
+                      type="text"
+                      id="title"
+                      value={editForm.title || ''}
+                      onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="iframe_url">Iframe URL</label>
+                    <input
+                      type="url"
+                      id="iframe_url"
+                      value={editForm.iframe_url || ''}
+                      onChange={(e) => setEditForm({ ...editForm, iframe_url: e.target.value })}
+                      placeholder="http://127.0.0.1:8999"
+                    />
+                  </div>
+                </>
+              )}
+
+              <div className="modal-actions">
+                <button type="submit" className="btn btn-primary">Save Changes</button>
+                <button type="button" className="btn btn-outline" onClick={closeEditModal}>Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

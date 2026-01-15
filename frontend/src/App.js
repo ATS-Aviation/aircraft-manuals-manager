@@ -163,6 +163,10 @@ function App() {
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </main>
+          <footer className="app-footer">
+            <span>&copy; {new Date().getFullYear()} ATS Technic</span>
+            <span className="footer-version">v1.0.0</span>
+          </footer>
         </div>
       </AuthProvider>
     </Router>

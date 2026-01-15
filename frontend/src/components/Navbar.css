@@ -13,10 +13,14 @@
 }
 
 .navbar-brand {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: white;
+  display: flex;
+  align-items: center;
   text-decoration: none;
+}
+
+.navbar-logo {
+  height: 40px;
+  width: auto;
 }
 
 .navbar-menu {

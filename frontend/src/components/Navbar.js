@@ -21,7 +21,11 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-brand">
-          ✈️ Aircraft Manuals Manager
+          <img
+            src="https://atsaviation.com/wp-content/uploads/2024/11/Technik.png"
+            alt="ATS Technic"
+            className="navbar-logo"
+          />
         </Link>
 
         <div className="navbar-menu">

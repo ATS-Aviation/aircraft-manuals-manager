@@ -19,8 +19,11 @@ def run_migrations():
                 conn.commit()
                 print("Migration: Added iframe_url column to manual_apps table")
 
-        # Make backend_port nullable if needed
-        # (This is handled by the model change, but existing data is fine)
+        # Make backend_port nullable
+        with engine.connect() as conn:
+            conn.execute(text('ALTER TABLE manual_apps ALTER COLUMN backend_port DROP NOT NULL'))
+            conn.commit()
+            print("Migration: Made backend_port nullable")
 
     print("Migrations completed")
 

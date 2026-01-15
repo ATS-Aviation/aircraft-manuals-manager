@@ -217,8 +217,7 @@ const AdminDashboard = () => {
                   <tr>
                     <th>Title</th>
                     <th>Aircraft</th>
-                    <th>Port</th>
-                    <th>URL Path</th>
+                    <th>Iframe URL</th>
                     <th>Status</th>
                     <th>Actions</th>
                   </tr>
@@ -228,8 +227,7 @@ const AdminDashboard = () => {
                     <tr key={app.id}>
                       <td>{app.title}</td>
                       <td>{app.aircraft.customer.name} - {app.aircraft.name}</td>
-                      <td>{app.backend_port}</td>
-                      <td><code>{app.url_path}</code></td>
+                      <td><code>{app.iframe_url || 'Not set'}</code></td>
                       <td>
                         <span className={`status ${app.is_active ? 'active' : 'inactive'}`}>
                           {app.is_active ? 'Active' : 'Inactive'}
